@@ -68,7 +68,7 @@ z2 = a1 * Theta1'; % 5000x25
 a2 = [ones(m,1) sigmoid(z2)]; % 5000x26
 z3 = a2 * Theta2'; % 5000x10
 h_theta = sigmoid(z3);
-
+a3=h_theta;
 log_h_theta = log(h_theta);
 log_1_minus_h_theta = log(1-h_theta);
 
@@ -82,15 +82,26 @@ for i = 1:m
 %        J = J + (-Y(i,k) * log(h_theta(i,k)) - (1-Y(i,k)) * log(1-h_theta(i,k)));
 %    end
     J = J + (-Y(i,:) * log_h_theta(i,:)') - (1-Y(i,:)) * log_1_minus_h_theta(i,:)';
+    delta3 = (h_theta(i,:) - Y(i,:))';
+    delta2 = Theta2' * delta3 .* [1;sigmoidGradient(z2(i,:)')];
+    delta2 = delta2(2:end);
+
+    % Accumulate gradients
+    Theta2_grad = Theta2_grad + delta3*a2(i,:);
+    Theta1_grad = Theta1_grad + delta2*a1(i,:);
 end
 J = J/m;
 
+
 % Compute regularization term
-Theta1squared = Theta1(:,2:size(Theta1,2)).^2;
-Theta2squared = Theta2(:,2:size(Theta2,2)).^2;
+Theta1squared = Theta1(:,2:end).^2;
+Theta2squared = Theta2(:,2:end).^2;
 reg_term = lambda * ((sum(sum(Theta1squared),2)) + sum(sum(Theta2squared),2))/(2*m);
 
 J = J+reg_term;
+
+Theta2_grad = Theta2_grad ./ m;
+Theta1_grad = Theta1_grad ./ m;
 
 
 % -------------------------------------------------------------
