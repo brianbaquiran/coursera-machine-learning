@@ -25,8 +25,10 @@ y_terms = [-y, -(1-y)];
 log_terms = [log(h_theta), log(1-h_theta)];
 J = sum(sum(y_terms .* log_terms))/m;
 
-grad = (sum((h_theta - y) .* X)/m);
+grad_lambda_term = lambda/m * theta';
+grad_lambda_term(1) = 0;
 
+grad = (sum((h_theta - y) .* X)/m) + grad_lambda_term;
 
 
 
