@@ -100,8 +100,9 @@ reg_term = lambda * ((sum(sum(Theta1squared),2)) + sum(sum(Theta2squared),2))/(2
 
 J = J+reg_term;
 
-Theta2_grad = Theta2_grad ./ m;
-Theta1_grad = Theta1_grad ./ m;
+% Regularization
+Theta2_grad = Theta2_grad ./ m + [zeros(num_labels, 1) (Theta2 * lambda/m)(:,2:end)];
+Theta1_grad = Theta1_grad ./ m + [zeros(hidden_layer_size, 1) (Theta1 * lambda/m)(:,2:end)];
 
 
 % -------------------------------------------------------------
