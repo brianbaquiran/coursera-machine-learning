@@ -85,9 +85,12 @@ for i = 1:m
 end
 J = J/m;
 
+% Compute regularization term
+Theta1squared = Theta1(:,2:size(Theta1,2)).^2;
+Theta2squared = Theta2(:,2:size(Theta2,2)).^2;
+reg_term = lambda * ((sum(sum(Theta1squared),2)) + sum(sum(Theta2squared),2))/(2*m);
 
-
-
+J = J+reg_term;
 
 
 % -------------------------------------------------------------
