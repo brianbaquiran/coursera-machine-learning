@@ -142,8 +142,26 @@ load('ex6data3.mat');
 [C, sigma] = dataset3Params(X, y, Xval, yval);
 
 % Train the SVM
+paramvals = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+error_matrix = zeros(64,3);
+error_matrix_row = 0;
+for C = paramvals
+    for sigma = paramvals
+        error_matrix_row = error_matrix_row+1;
+        model= svmTrain(X, y, C, @(x1, x2) gaussianKernel(x1, x2, sigma));
+        predictions = svmPredict(model, Xval);
+        error = mean(double(predictions ~= yval));
+        printf("%0.5f\t%0.5f\t%0.5f\n",C,sigma,error);
+        error_matrix(error_matrix_row,:) = [C, sigma, error];
+    end
+end
+[min_err, min_err_idx] = min(error_matrix(:,3))
+C = error_matrix(min_err_idx,1);
+sigma = error_matrix(min_err_idx,2);
+
 model= svmTrain(X, y, C, @(x1, x2) gaussianKernel(x1, x2, sigma));
 visualizeBoundary(X, y, model);
+
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
