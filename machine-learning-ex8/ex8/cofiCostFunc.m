@@ -65,7 +65,12 @@ regularization_X_term = lambda/2 * sum(sum(X.^2));
 
 J = J + regularization_Theta_term + regularization_X_term;
 
+% Regularized gradient terms
+regularization_X_grad = lambda * X;
+regularization_Theta_grad = lambda * Theta;
 
+X_grad = X_grad + regularization_X_grad;
+Theta_grad = Theta_grad + regularization_Theta_grad;
 
 
 
