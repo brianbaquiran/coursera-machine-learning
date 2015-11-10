@@ -58,8 +58,12 @@ X_grad = ((Y_predicted - Y).*R)*Theta; % num_movies x num_users * num_users x nu
 % Theta_grad should be a matrix same size as Theta (num_users * num_features)
 Theta_grad = ((Y_predicted - Y).*R)' * X; % num_users x num_movies * num_movies x num_features
 
+%%%%%%%%
+% Regularized cost function terms
+regularization_Theta_term = lambda/2 * sum(sum(Theta.^2));
+regularization_X_term = lambda/2 * sum(sum(X.^2));
 
-
+J = J + regularization_Theta_term + regularization_X_term;
 
 
 
