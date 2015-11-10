@@ -42,10 +42,13 @@ Theta_grad = zeros(size(Theta));
 
 % Compute the cost (unregularized)
 
-Y_predicted = X * Theta'; % estimate; num_movies x num_users
-squared_cost_term = (Y_predicted - Y).^2; % squared cost; num_movies x num_users
-squared_cost_rated = squared_cost_term .* R; % only count the cost for rated movies; num_movies x num_users
-J = sum(sum(squared_cost_rated))/2
+% Y_predicted = X * Theta'; % estimate; num_movies x num_users
+% squared_cost_term = (Y_predicted - Y).^2; % squared cost; num_movies x num_users
+% squared_cost_rated = squared_cost_term .* R; % only count the cost for rated movies; num_movies x num_users
+% J = sum(sum(squared_cost_rated))/2;
+J = sum(sum(
+         (((X * Theta') - Y).^2).*R
+    ))/2;
 
 
 
