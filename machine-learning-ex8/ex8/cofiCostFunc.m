@@ -39,10 +39,10 @@ Theta_grad = zeros(size(Theta));
 %        Theta_grad - num_users x num_features matrix, containing the
 %                     partial derivatives w.r.t. to each element of Theta
 %
-
+%%%%%%%%
 % Compute the cost (unregularized)
 
-% Y_predicted = X * Theta'; % estimate; num_movies x num_users
+Y_predicted = X * Theta'; % estimate; num_movies x num_users
 % squared_cost_term = (Y_predicted - Y).^2; % squared cost; num_movies x num_users
 % squared_cost_rated = squared_cost_term .* R; % only count the cost for rated movies; num_movies x num_users
 % J = sum(sum(squared_cost_rated))/2;
@@ -50,9 +50,13 @@ J = sum(sum(
          (((X * Theta') - Y).^2).*R
     ))/2;
 
+%%%%%%%%
+% Compute gradients along X and Theta
+% X_grad should be a matrix same size as X (num_movies x num_features)
+X_grad = ((Y_predicted - Y).*R)*Theta; % num_movies x num_users * num_users x num_features
 
-
-
+% Theta_grad should be a matrix same size as Theta (num_users * num_features)
+Theta_grad = ((Y_predicted - Y).*R)' * X; % num_users x num_movies * num_movies x num_features
 
 
 
